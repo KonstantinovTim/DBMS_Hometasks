@@ -1,0 +1,53 @@
+name: mongodb-homework
+x-node: &node
+  image: mongo:8.0.30
+  command: [mongod, --replSet, hw2rs, --bind_ip_all, --wiredTigerCacheSizeGB, '0.25']
+  healthcheck:
+    test: [CMD, mongosh, --quiet, --eval, 'quit(db.adminCommand({ping:1}).ok ? 0 : 1)']
+    interval: 3s
+    timeout: 10s
+    retries: 40
+services:
+  m1:
+    <<: *node
+    volumes: [data_m1:/data/db]
+  m2:
+    <<: *node
+    volumes: [data_m2:/data/db]
+  m3:
+    <<: *node
+    volumes: [data_m3:/data/db]
+  init:
+    image: mongo:8.0.30
+    depends_on:
+      m1: {condition: service_healthy}
+      m2: {condition: service_healthy}
+      m3: {condition: service_healthy}
+    volumes: [.:/work:ro]
+    environment: {HW_CASE: init}
+    entrypoint: [mongosh, 'mongodb://m1:27017/admin?directConnection=true', --quiet, --file, /work/lab.js]
+  lab:
+    image: mongo:8.0.30
+    profiles: [tools]
+    depends_on:
+      init: {condition: service_completed_successfully}
+    volumes: [.:/work:ro, ./results:/out]
+    environment:
+      MONGODB_URI: 'mongodb://m1:27017,m2:27017,m3:27017/hw2?replicaSet=hw2rs&retryWrites=true&serverSelectionTimeoutMS=10000&readPreference=primary'
+    entrypoint:
+      - sh
+      - -c
+      - |
+        export HW_CASE="$${1:-help}"
+        export HW_DATASET="$${2:-}"
+        if [ "$$HW_CASE" = shell ]; then exec mongosh "$$MONGODB_URI"; fi
+        exec mongosh "$$MONGODB_URI" --quiet --file /work/lab.js
+      - lab
+    command: [help]
+volumes:
+  data_m1:
+  data_m2:
+  data_m3:
+networks:
+  default:
+    internal: true
