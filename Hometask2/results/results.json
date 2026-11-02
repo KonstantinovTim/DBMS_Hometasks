@@ -1,0 +1,4770 @@
+{
+  "dataset": "2026-10-05",
+  "scenarios": {
+    "data": {
+      "status": "passed",
+      "startedAt": {
+        "$date": {
+          "$numberLong": "1792336640821"
+        }
+      },
+      "solutionHash": "893e4ee20811d761821c3428b476d82a1187d6ea77d76f53a78e317fe3cfa23d",
+      "checks": [
+        "validator strict/error installed",
+        "validation valid",
+        "validation string-price",
+        "validation negative-stock",
+        "complete product documents clothes/L/2",
+        "search clothes/L/2",
+        "complete product documents clothes/M/5",
+        "search clothes/M/5",
+        "complete product documents accessories/L/3",
+        "search accessories/L/3",
+        "complete product documents clothes/L/99",
+        "search clothes/L/99",
+        "L=2 includes A",
+        "complete history documents",
+        "history 20 IDs including date ties",
+        "history other user",
+        "history other status",
+        "history no matches",
+        "report top 5 amounts/order/names",
+        "empty interval",
+        "from included",
+        "catalog price does not rewrite revenue"
+      ],
+      "artifacts": {
+        "data": {
+          "options": {
+            "validator": {
+              "$and": [
+                {
+                  "$jsonSchema": {
+                    "bsonType": "object",
+                    "required": [
+                      "_id",
+                      "name",
+                      "category",
+                      "price",
+                      "variants"
+                    ],
+                    "properties": {
+                      "_id": {
+                        "bsonType": "string"
+                      },
+                      "name": {
+                        "bsonType": "string"
+                      },
+                      "category": {
+                        "bsonType": "string"
+                      },
+                      "price": {
+                        "bsonType": "decimal",
+                        "minimum": {
+                          "$numberInt": "0"
+                        }
+                      },
+                      "variants": {
+                        "bsonType": "array",
+                        "items": {
+                          "bsonType": "object",
+                          "required": [
+                            "size",
+                            "stock"
+                          ],
+                          "properties": {
+                            "size": {
+                              "bsonType": "string"
+                            },
+                            "stock": {
+                              "bsonType": [
+                                "int",
+                                "long"
+                              ],
+                              "minimum": {
+                                "$numberInt": "0"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "$expr": {
+                    "$cond": [
+                      {
+                        "$isArray": "$variants"
+                      },
+                      {
+                        "$eq": [
+                          {
+                            "$size": {
+                              "$setUnion": [
+                                "$variants.size"
+                              ]
+                            }
+                          },
+                          {
+                            "$size": "$variants"
+                          }
+                        ]
+                      },
+                      false
+                    ]
+                  }
+                }
+              ]
+            },
+            "validationLevel": "strict",
+            "validationAction": "error"
+          },
+          "validation": [
+            {
+              "id": "valid",
+              "code": {
+                "$numberInt": "0"
+              },
+              "details": null
+            },
+            {
+              "id": "string-price",
+              "code": {
+                "$numberInt": "121"
+              },
+              "details": {
+                "failingDocumentId": "string-price",
+                "details": {
+                  "operatorName": "$and",
+                  "clausesNotSatisfied": [
+                    {
+                      "index": {
+                        "$numberInt": "0"
+                      },
+                      "details": {
+                        "operatorName": "$jsonSchema",
+                        "schemaRulesNotSatisfied": [
+                          {
+                            "operatorName": "properties",
+                            "propertiesNotSatisfied": [
+                              {
+                                "propertyName": "price",
+                                "details": [
+                                  {
+                                    "operatorName": "bsonType",
+                                    "specifiedAs": {
+                                      "bsonType": "decimal"
+                                    },
+                                    "reason": "type did not match",
+                                    "consideredValue": "100.00",
+                                    "consideredType": "string"
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "id": "negative-stock",
+              "code": {
+                "$numberInt": "121"
+              },
+              "details": {
+                "failingDocumentId": "negative-stock",
+                "details": {
+                  "operatorName": "$and",
+                  "clausesNotSatisfied": [
+                    {
+                      "index": {
+                        "$numberInt": "0"
+                      },
+                      "details": {
+                        "operatorName": "$jsonSchema",
+                        "schemaRulesNotSatisfied": [
+                          {
+                            "operatorName": "properties",
+                            "propertiesNotSatisfied": [
+                              {
+                                "propertyName": "variants",
+                                "details": [
+                                  {
+                                    "operatorName": "items",
+                                    "reason": "At least one item did not match the sub-schema",
+                                    "itemIndex": {
+                                      "$numberInt": "0"
+                                    },
+                                    "details": [
+                                      {
+                                        "operatorName": "properties",
+                                        "propertiesNotSatisfied": [
+                                          {
+                                            "propertyName": "stock",
+                                            "details": [
+                                              {
+                                                "operatorName": "minimum",
+                                                "specifiedAs": {
+                                                  "minimum": {
+                                                    "$numberInt": "0"
+                                                  }
+                                                },
+                                                "reason": "comparison failed",
+                                                "consideredValue": {
+                                                  "$numberInt": "-1"
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          ],
+          "searches": [
+            {
+              "category": "clothes",
+              "size": "L",
+              "qty": {
+                "$numberInt": "2"
+              },
+              "documents": [
+                {
+                  "_id": "B",
+                  "name": "Рубашка",
+                  "category": "clothes",
+                  "price": {
+                    "$numberDecimal": "80.00"
+                  },
+                  "variants": [
+                    {
+                      "size": "L",
+                      "stock": {
+                        "$numberInt": "5"
+                      }
+                    },
+                    {
+                      "size": "M",
+                      "stock": {
+                        "$numberInt": "4"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "_id": "C",
+                  "name": "Толстовка",
+                  "category": "clothes",
+                  "price": {
+                    "$numberDecimal": "90.00"
+                  },
+                  "variants": [
+                    {
+                      "size": "L",
+                      "stock": {
+                        "$numberInt": "3"
+                      }
+                    },
+                    {
+                      "size": "M",
+                      "stock": {
+                        "$numberInt": "2"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "found": [
+                "B",
+                "C"
+              ],
+              "expected": [
+                "B",
+                "C"
+              ]
+            },
+            {
+              "category": "clothes",
+              "size": "M",
+              "qty": {
+                "$numberInt": "5"
+              },
+              "documents": [
+                {
+                  "_id": "A",
+                  "name": "Футболка",
+                  "category": "clothes",
+                  "price": {
+                    "$numberDecimal": "100.00"
+                  },
+                  "variants": [
+                    {
+                      "size": "L",
+                      "stock": {
+                        "$numberInt": "0"
+                      }
+                    },
+                    {
+                      "size": "M",
+                      "stock": {
+                        "$numberInt": "10"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "found": [
+                "A"
+              ],
+              "expected": [
+                "A"
+              ]
+            },
+            {
+              "category": "accessories",
+              "size": "L",
+              "qty": {
+                "$numberInt": "3"
+              },
+              "documents": [
+                {
+                  "_id": "D",
+                  "name": "Ремень",
+                  "category": "accessories",
+                  "price": {
+                    "$numberDecimal": "120.00"
+                  },
+                  "variants": [
+                    {
+                      "size": "L",
+                      "stock": {
+                        "$numberInt": "4"
+                      }
+                    },
+                    {
+                      "size": "M",
+                      "stock": {
+                        "$numberInt": "6"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "found": [
+                "D"
+              ],
+              "expected": [
+                "D"
+              ]
+            },
+            {
+              "category": "clothes",
+              "size": "L",
+              "qty": {
+                "$numberInt": "99"
+              },
+              "documents": [],
+              "found": [],
+              "expected": []
+            },
+            {
+              "afterChange": "A/L=2",
+              "documents": [
+                {
+                  "_id": "A",
+                  "name": "Футболка",
+                  "category": "clothes",
+                  "price": {
+                    "$numberDecimal": "100.00"
+                  },
+                  "variants": [
+                    {
+                      "size": "L",
+                      "stock": {
+                        "$numberInt": "2"
+                      }
+                    },
+                    {
+                      "size": "M",
+                      "stock": {
+                        "$numberInt": "10"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "_id": "B",
+                  "name": "Рубашка",
+                  "category": "clothes",
+                  "price": {
+                    "$numberDecimal": "80.00"
+                  },
+                  "variants": [
+                    {
+                      "size": "L",
+                      "stock": {
+                        "$numberInt": "5"
+                      }
+                    },
+                    {
+                      "size": "M",
+                      "stock": {
+                        "$numberInt": "4"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "_id": "C",
+                  "name": "Толстовка",
+                  "category": "clothes",
+                  "price": {
+                    "$numberDecimal": "90.00"
+                  },
+                  "variants": [
+                    {
+                      "size": "L",
+                      "stock": {
+                        "$numberInt": "3"
+                      }
+                    },
+                    {
+                      "size": "M",
+                      "stock": {
+                        "$numberInt": "2"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "found": [
+                "A",
+                "B",
+                "C"
+              ]
+            }
+          ],
+          "history": [
+            {
+              "_id": "H24",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1772366400000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "H25",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1772366400000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "H22",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1772362800000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "H23",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1772362800000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "H20",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1772359200000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "H21",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1772359200000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "H18",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1772355600000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "H19",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1772355600000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "H16",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1772352000000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "H17",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1772352000000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "H14",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1772348400000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "H15",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1772348400000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "H12",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1772344800000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "H13",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1772344800000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "H10",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1772341200000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "H11",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1772341200000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "H08",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1772337600000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "H09",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1772337600000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "H06",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1772334000000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "H07",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1772334000000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            }
+          ],
+          "historyIds": [
+            "H24",
+            "H25",
+            "H22",
+            "H23",
+            "H20",
+            "H21",
+            "H18",
+            "H19",
+            "H16",
+            "H17",
+            "H14",
+            "H15",
+            "H12",
+            "H13",
+            "H10",
+            "H11",
+            "H08",
+            "H09",
+            "H06",
+            "H07"
+          ],
+          "otherUser": [
+            {
+              "_id": "other-user",
+              "userId": {
+                "$numberInt": "2501"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1775001600000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            }
+          ],
+          "otherStatus": [
+            {
+              "_id": "other-status",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1775001600000"
+                }
+              },
+              "status": "cancelled",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "excluded-cancelled",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1768435200000"
+                }
+              },
+              "status": "cancelled",
+              "items": [
+                {
+                  "sku": "A",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "999"
+                  },
+                  "price": {
+                    "$numberDecimal": "100.00"
+                  }
+                }
+              ]
+            }
+          ],
+          "noHistory": [],
+          "historyExpected": [
+            "H24",
+            "H25",
+            "H22",
+            "H23",
+            "H20",
+            "H21",
+            "H18",
+            "H19",
+            "H16",
+            "H17",
+            "H14",
+            "H15",
+            "H12",
+            "H13",
+            "H10",
+            "H11",
+            "H08",
+            "H09",
+            "H06",
+            "H07"
+          ],
+          "report": [
+            {
+              "qty": {
+                "$numberInt": "3"
+              },
+              "revenue": {
+                "$numberDecimal": "320.00"
+              },
+              "sku": "A",
+              "name": "Футболка"
+            },
+            {
+              "qty": {
+                "$numberInt": "4"
+              },
+              "revenue": {
+                "$numberDecimal": "320.00"
+              },
+              "sku": "B",
+              "name": "Рубашка"
+            },
+            {
+              "qty": {
+                "$numberInt": "3"
+              },
+              "revenue": {
+                "$numberDecimal": "270.00"
+              },
+              "sku": "C",
+              "name": "Толстовка"
+            },
+            {
+              "qty": {
+                "$numberInt": "2"
+              },
+              "revenue": {
+                "$numberDecimal": "240.00"
+              },
+              "sku": "D",
+              "name": "Ремень"
+            },
+            {
+              "qty": {
+                "$numberInt": "1"
+              },
+              "revenue": {
+                "$numberDecimal": "200.00"
+              },
+              "sku": "E",
+              "name": "Сумка"
+            }
+          ],
+          "reportParameters": {
+            "from": {
+              "$date": {
+                "$numberLong": "1767225600000"
+              }
+            },
+            "to": {
+              "$date": {
+                "$numberLong": "1769904000000"
+              }
+            }
+          },
+          "emptyReport": {
+            "from": {
+              "$date": {
+                "$numberLong": "1704067200000"
+              }
+            },
+            "to": {
+              "$date": {
+                "$numberLong": "1706745600000"
+              }
+            },
+            "rows": []
+          },
+          "boundaryReport": {
+            "from": {
+              "$date": {
+                "$numberLong": "1767225600000"
+              }
+            },
+            "to": {
+              "$date": {
+                "$numberLong": "1767225600001"
+              }
+            },
+            "rows": [
+              {
+                "qty": {
+                  "$numberInt": "4"
+                },
+                "revenue": {
+                  "$numberDecimal": "320.00"
+                },
+                "sku": "B",
+                "name": "Рубашка"
+              },
+              {
+                "qty": {
+                  "$numberInt": "2"
+                },
+                "revenue": {
+                  "$numberDecimal": "200.00"
+                },
+                "sku": "A",
+                "name": "Футболка"
+              }
+            ]
+          },
+          "afterPriceReport": {
+            "from": {
+              "$date": {
+                "$numberLong": "1767225600000"
+              }
+            },
+            "to": {
+              "$date": {
+                "$numberLong": "1769904000000"
+              }
+            },
+            "changedProduct": {
+              "sku": "A",
+              "price": {
+                "$numberDecimal": "999.00"
+              }
+            },
+            "rows": [
+              {
+                "qty": {
+                  "$numberInt": "3"
+                },
+                "revenue": {
+                  "$numberDecimal": "320.00"
+                },
+                "sku": "A",
+                "name": "Футболка"
+              },
+              {
+                "qty": {
+                  "$numberInt": "4"
+                },
+                "revenue": {
+                  "$numberDecimal": "320.00"
+                },
+                "sku": "B",
+                "name": "Рубашка"
+              },
+              {
+                "qty": {
+                  "$numberInt": "3"
+                },
+                "revenue": {
+                  "$numberDecimal": "270.00"
+                },
+                "sku": "C",
+                "name": "Толстовка"
+              },
+              {
+                "qty": {
+                  "$numberInt": "2"
+                },
+                "revenue": {
+                  "$numberDecimal": "240.00"
+                },
+                "sku": "D",
+                "name": "Ремень"
+              },
+              {
+                "qty": {
+                  "$numberInt": "1"
+                },
+                "revenue": {
+                  "$numberDecimal": "200.00"
+                },
+                "sku": "E",
+                "name": "Сумка"
+              }
+            ]
+          },
+          "expected": [
+            {
+              "sku": "A",
+              "name": "Футболка",
+              "qty": {
+                "$numberInt": "3"
+              },
+              "revenue": "320.00"
+            },
+            {
+              "sku": "B",
+              "name": "Рубашка",
+              "qty": {
+                "$numberInt": "4"
+              },
+              "revenue": "320.00"
+            },
+            {
+              "sku": "C",
+              "name": "Толстовка",
+              "qty": {
+                "$numberInt": "3"
+              },
+              "revenue": "270.00"
+            },
+            {
+              "sku": "D",
+              "name": "Ремень",
+              "qty": {
+                "$numberInt": "2"
+              },
+              "revenue": "240.00"
+            },
+            {
+              "sku": "E",
+              "name": "Сумка",
+              "qty": {
+                "$numberInt": "1"
+              },
+              "revenue": "200.00"
+            }
+          ],
+          "checks": [
+            "validator strict/error installed",
+            "validation valid",
+            "validation string-price",
+            "validation negative-stock",
+            "complete product documents clothes/L/2",
+            "search clothes/L/2",
+            "complete product documents clothes/M/5",
+            "search clothes/M/5",
+            "complete product documents accessories/L/3",
+            "search accessories/L/3",
+            "complete product documents clothes/L/99",
+            "search clothes/L/99",
+            "L=2 includes A",
+            "complete history documents",
+            "history 20 IDs including date ties",
+            "history other user",
+            "history other status",
+            "history no matches",
+            "report top 5 amounts/order/names",
+            "empty interval",
+            "from included",
+            "catalog price does not rewrite revenue"
+          ]
+        }
+      },
+      "server": "8.0.30",
+      "finishedAt": {
+        "$date": {
+          "$numberLong": "1792336640907"
+        }
+      }
+    },
+    "index": {
+      "status": "passed",
+      "startedAt": {
+        "$date": {
+          "$numberLong": "1792336640909"
+        }
+      },
+      "solutionHash": "893e4ee20811d761821c3428b476d82a1187d6ea77d76f53a78e317fe3cfa23d",
+      "checks": [
+        "10000 documents",
+        "only _id index initially",
+        "same IDs and order",
+        "matches independent fixture order",
+        "before scans collection + SORT",
+        "after uses IXSCAN without SORT",
+        "examines fewer documents"
+      ],
+      "artifacts": {
+        "explain-before": {
+          "explainVersion": "1",
+          "queryPlanner": {
+            "namespace": "hw2.orders",
+            "parsedQuery": {
+              "$and": [
+                {
+                  "status": {
+                    "$eq": "paid"
+                  }
+                },
+                {
+                  "userId": {
+                    "$eq": {
+                      "$numberInt": "2500"
+                    }
+                  }
+                }
+              ]
+            },
+            "indexFilterSet": false,
+            "queryHash": "DFD91C33",
+            "planCacheShapeHash": "DFD91C33",
+            "planCacheKey": "FB45820F",
+            "optimizationTimeMillis": {
+              "$numberInt": "0"
+            },
+            "maxIndexedOrSolutionsReached": false,
+            "maxIndexedAndSolutionsReached": false,
+            "maxScansToExplodeReached": false,
+            "prunedSimilarIndexes": false,
+            "winningPlan": {
+              "isCached": false,
+              "stage": "SORT",
+              "sortPattern": {
+                "createdAt": {
+                  "$numberInt": "-1"
+                },
+                "_id": {
+                  "$numberInt": "1"
+                }
+              },
+              "memLimit": {
+                "$numberInt": "104857600"
+              },
+              "limitAmount": {
+                "$numberInt": "20"
+              },
+              "type": "simple",
+              "inputStage": {
+                "stage": "COLLSCAN",
+                "filter": {
+                  "$and": [
+                    {
+                      "status": {
+                        "$eq": "paid"
+                      }
+                    },
+                    {
+                      "userId": {
+                        "$eq": {
+                          "$numberInt": "2500"
+                        }
+                      }
+                    }
+                  ]
+                },
+                "direction": "forward"
+              }
+            },
+            "rejectedPlans": []
+          },
+          "executionStats": {
+            "executionSuccess": true,
+            "nReturned": {
+              "$numberInt": "20"
+            },
+            "executionTimeMillis": {
+              "$numberInt": "2"
+            },
+            "totalKeysExamined": {
+              "$numberInt": "0"
+            },
+            "totalDocsExamined": {
+              "$numberInt": "10000"
+            },
+            "executionStages": {
+              "isCached": false,
+              "stage": "SORT",
+              "nReturned": {
+                "$numberInt": "20"
+              },
+              "executionTimeMillisEstimate": {
+                "$numberInt": "0"
+              },
+              "works": {
+                "$numberInt": "10022"
+              },
+              "advanced": {
+                "$numberInt": "20"
+              },
+              "needTime": {
+                "$numberInt": "10001"
+              },
+              "needYield": {
+                "$numberInt": "0"
+              },
+              "saveState": {
+                "$numberInt": "0"
+              },
+              "restoreState": {
+                "$numberInt": "0"
+              },
+              "isEOF": {
+                "$numberInt": "1"
+              },
+              "sortPattern": {
+                "createdAt": {
+                  "$numberInt": "-1"
+                },
+                "_id": {
+                  "$numberInt": "1"
+                }
+              },
+              "memLimit": {
+                "$numberInt": "104857600"
+              },
+              "limitAmount": {
+                "$numberInt": "20"
+              },
+              "type": "simple",
+              "totalDataSizeSorted": {
+                "$numberInt": "4960"
+              },
+              "usedDisk": false,
+              "spills": {
+                "$numberInt": "0"
+              },
+              "spilledDataStorageSize": {
+                "$numberInt": "0"
+              },
+              "inputStage": {
+                "stage": "COLLSCAN",
+                "filter": {
+                  "$and": [
+                    {
+                      "status": {
+                        "$eq": "paid"
+                      }
+                    },
+                    {
+                      "userId": {
+                        "$eq": {
+                          "$numberInt": "2500"
+                        }
+                      }
+                    }
+                  ]
+                },
+                "nReturned": {
+                  "$numberInt": "1600"
+                },
+                "executionTimeMillisEstimate": {
+                  "$numberInt": "0"
+                },
+                "works": {
+                  "$numberInt": "10001"
+                },
+                "advanced": {
+                  "$numberInt": "1600"
+                },
+                "needTime": {
+                  "$numberInt": "8400"
+                },
+                "needYield": {
+                  "$numberInt": "0"
+                },
+                "saveState": {
+                  "$numberInt": "0"
+                },
+                "restoreState": {
+                  "$numberInt": "0"
+                },
+                "isEOF": {
+                  "$numberInt": "1"
+                },
+                "direction": "forward",
+                "docsExamined": {
+                  "$numberInt": "10000"
+                }
+              }
+            }
+          },
+          "queryShapeHash": "635D4F00B666E61B713823BFECAABA5DFB3B4184E1C2F1FC6D7392224E8D6FD2",
+          "command": {
+            "find": "orders",
+            "filter": {
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "status": "paid"
+            },
+            "sort": {
+              "createdAt": {
+                "$numberInt": "-1"
+              },
+              "_id": {
+                "$numberInt": "1"
+              }
+            },
+            "limit": {
+              "$numberInt": "20"
+            },
+            "$db": "hw2"
+          },
+          "serverInfo": {
+            "host": "f7d7732ea322",
+            "port": {
+              "$numberInt": "27017"
+            },
+            "version": "8.0.30",
+            "gitVersion": "360770fbc9b6a893748150d2ab2799e119b9fac9"
+          },
+          "serverParameters": {
+            "internalQueryFacetBufferSizeBytes": {
+              "$numberInt": "104857600"
+            },
+            "internalQueryFacetMaxOutputDocSizeBytes": {
+              "$numberInt": "104857600"
+            },
+            "internalLookupStageIntermediateDocumentMaxSizeBytes": {
+              "$numberInt": "104857600"
+            },
+            "internalDocumentSourceGroupMaxMemoryBytes": {
+              "$numberInt": "104857600"
+            },
+            "internalQueryMaxBlockingSortMemoryUsageBytes": {
+              "$numberInt": "104857600"
+            },
+            "internalQueryProhibitBlockingMergeOnMongoS": {
+              "$numberInt": "0"
+            },
+            "internalQueryMaxAddToSetBytes": {
+              "$numberInt": "104857600"
+            },
+            "internalDocumentSourceSetWindowFieldsMaxMemoryBytes": {
+              "$numberInt": "104857600"
+            },
+            "internalQueryFrameworkControl": "trySbeRestricted",
+            "internalQueryPlannerIgnoreIndexWithCollationForRegex": {
+              "$numberInt": "1"
+            }
+          },
+          "ok": {
+            "$numberInt": "1"
+          },
+          "$clusterTime": {
+            "clusterTime": {
+              "$timestamp": {
+                "t": 1792336641,
+                "i": 20
+              }
+            },
+            "signature": {
+              "hash": {
+                "$binary": {
+                  "base64": "AAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+                  "subType": "00"
+                }
+              },
+              "keyId": {
+                "$numberLong": "0"
+              }
+            }
+          },
+          "operationTime": {
+            "$timestamp": {
+              "t": 1792336641,
+              "i": 20
+            }
+          }
+        },
+        "explain-after": {
+          "explainVersion": "1",
+          "queryPlanner": {
+            "namespace": "hw2.orders",
+            "parsedQuery": {
+              "$and": [
+                {
+                  "status": {
+                    "$eq": "paid"
+                  }
+                },
+                {
+                  "userId": {
+                    "$eq": {
+                      "$numberInt": "2500"
+                    }
+                  }
+                }
+              ]
+            },
+            "indexFilterSet": false,
+            "queryHash": "DFD91C33",
+            "planCacheShapeHash": "DFD91C33",
+            "planCacheKey": "F0D6D863",
+            "optimizationTimeMillis": {
+              "$numberInt": "0"
+            },
+            "maxIndexedOrSolutionsReached": false,
+            "maxIndexedAndSolutionsReached": false,
+            "maxScansToExplodeReached": false,
+            "prunedSimilarIndexes": false,
+            "winningPlan": {
+              "isCached": false,
+              "stage": "LIMIT",
+              "limitAmount": {
+                "$numberInt": "20"
+              },
+              "inputStage": {
+                "stage": "FETCH",
+                "inputStage": {
+                  "stage": "IXSCAN",
+                  "keyPattern": {
+                    "userId": {
+                      "$numberInt": "1"
+                    },
+                    "status": {
+                      "$numberInt": "1"
+                    },
+                    "createdAt": {
+                      "$numberInt": "-1"
+                    },
+                    "_id": {
+                      "$numberInt": "1"
+                    }
+                  },
+                  "indexName": "history_user_status_date_id",
+                  "isMultiKey": false,
+                  "multiKeyPaths": {
+                    "userId": [],
+                    "status": [],
+                    "createdAt": [],
+                    "_id": []
+                  },
+                  "isUnique": false,
+                  "isSparse": false,
+                  "isPartial": false,
+                  "indexVersion": {
+                    "$numberInt": "2"
+                  },
+                  "direction": "forward",
+                  "indexBounds": {
+                    "userId": [
+                      "[2500, 2500]"
+                    ],
+                    "status": [
+                      "[\"paid\", \"paid\"]"
+                    ],
+                    "createdAt": [
+                      "[MaxKey, MinKey]"
+                    ],
+                    "_id": [
+                      "[MinKey, MaxKey]"
+                    ]
+                  }
+                }
+              }
+            },
+            "rejectedPlans": []
+          },
+          "executionStats": {
+            "executionSuccess": true,
+            "nReturned": {
+              "$numberInt": "20"
+            },
+            "executionTimeMillis": {
+              "$numberInt": "1"
+            },
+            "totalKeysExamined": {
+              "$numberInt": "20"
+            },
+            "totalDocsExamined": {
+              "$numberInt": "20"
+            },
+            "executionStages": {
+              "isCached": false,
+              "stage": "LIMIT",
+              "nReturned": {
+                "$numberInt": "20"
+              },
+              "executionTimeMillisEstimate": {
+                "$numberInt": "0"
+              },
+              "works": {
+                "$numberInt": "21"
+              },
+              "advanced": {
+                "$numberInt": "20"
+              },
+              "needTime": {
+                "$numberInt": "0"
+              },
+              "needYield": {
+                "$numberInt": "0"
+              },
+              "saveState": {
+                "$numberInt": "0"
+              },
+              "restoreState": {
+                "$numberInt": "0"
+              },
+              "isEOF": {
+                "$numberInt": "1"
+              },
+              "limitAmount": {
+                "$numberInt": "20"
+              },
+              "inputStage": {
+                "stage": "FETCH",
+                "nReturned": {
+                  "$numberInt": "20"
+                },
+                "executionTimeMillisEstimate": {
+                  "$numberInt": "0"
+                },
+                "works": {
+                  "$numberInt": "20"
+                },
+                "advanced": {
+                  "$numberInt": "20"
+                },
+                "needTime": {
+                  "$numberInt": "0"
+                },
+                "needYield": {
+                  "$numberInt": "0"
+                },
+                "saveState": {
+                  "$numberInt": "0"
+                },
+                "restoreState": {
+                  "$numberInt": "0"
+                },
+                "isEOF": {
+                  "$numberInt": "0"
+                },
+                "docsExamined": {
+                  "$numberInt": "20"
+                },
+                "alreadyHasObj": {
+                  "$numberInt": "0"
+                },
+                "inputStage": {
+                  "stage": "IXSCAN",
+                  "nReturned": {
+                    "$numberInt": "20"
+                  },
+                  "executionTimeMillisEstimate": {
+                    "$numberInt": "0"
+                  },
+                  "works": {
+                    "$numberInt": "20"
+                  },
+                  "advanced": {
+                    "$numberInt": "20"
+                  },
+                  "needTime": {
+                    "$numberInt": "0"
+                  },
+                  "needYield": {
+                    "$numberInt": "0"
+                  },
+                  "saveState": {
+                    "$numberInt": "0"
+                  },
+                  "restoreState": {
+                    "$numberInt": "0"
+                  },
+                  "isEOF": {
+                    "$numberInt": "0"
+                  },
+                  "keyPattern": {
+                    "userId": {
+                      "$numberInt": "1"
+                    },
+                    "status": {
+                      "$numberInt": "1"
+                    },
+                    "createdAt": {
+                      "$numberInt": "-1"
+                    },
+                    "_id": {
+                      "$numberInt": "1"
+                    }
+                  },
+                  "indexName": "history_user_status_date_id",
+                  "isMultiKey": false,
+                  "multiKeyPaths": {
+                    "userId": [],
+                    "status": [],
+                    "createdAt": [],
+                    "_id": []
+                  },
+                  "isUnique": false,
+                  "isSparse": false,
+                  "isPartial": false,
+                  "indexVersion": {
+                    "$numberInt": "2"
+                  },
+                  "direction": "forward",
+                  "indexBounds": {
+                    "userId": [
+                      "[2500, 2500]"
+                    ],
+                    "status": [
+                      "[\"paid\", \"paid\"]"
+                    ],
+                    "createdAt": [
+                      "[MaxKey, MinKey]"
+                    ],
+                    "_id": [
+                      "[MinKey, MaxKey]"
+                    ]
+                  },
+                  "keysExamined": {
+                    "$numberInt": "20"
+                  },
+                  "seeks": {
+                    "$numberInt": "1"
+                  },
+                  "dupsTested": {
+                    "$numberInt": "0"
+                  },
+                  "dupsDropped": {
+                    "$numberInt": "0"
+                  }
+                }
+              }
+            }
+          },
+          "queryShapeHash": "635D4F00B666E61B713823BFECAABA5DFB3B4184E1C2F1FC6D7392224E8D6FD2",
+          "command": {
+            "find": "orders",
+            "filter": {
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "status": "paid"
+            },
+            "sort": {
+              "createdAt": {
+                "$numberInt": "-1"
+              },
+              "_id": {
+                "$numberInt": "1"
+              }
+            },
+            "limit": {
+              "$numberInt": "20"
+            },
+            "$db": "hw2"
+          },
+          "serverInfo": {
+            "host": "f7d7732ea322",
+            "port": {
+              "$numberInt": "27017"
+            },
+            "version": "8.0.30",
+            "gitVersion": "360770fbc9b6a893748150d2ab2799e119b9fac9"
+          },
+          "serverParameters": {
+            "internalQueryFacetBufferSizeBytes": {
+              "$numberInt": "104857600"
+            },
+            "internalQueryFacetMaxOutputDocSizeBytes": {
+              "$numberInt": "104857600"
+            },
+            "internalLookupStageIntermediateDocumentMaxSizeBytes": {
+              "$numberInt": "104857600"
+            },
+            "internalDocumentSourceGroupMaxMemoryBytes": {
+              "$numberInt": "104857600"
+            },
+            "internalQueryMaxBlockingSortMemoryUsageBytes": {
+              "$numberInt": "104857600"
+            },
+            "internalQueryProhibitBlockingMergeOnMongoS": {
+              "$numberInt": "0"
+            },
+            "internalQueryMaxAddToSetBytes": {
+              "$numberInt": "104857600"
+            },
+            "internalDocumentSourceSetWindowFieldsMaxMemoryBytes": {
+              "$numberInt": "104857600"
+            },
+            "internalQueryFrameworkControl": "trySbeRestricted",
+            "internalQueryPlannerIgnoreIndexWithCollationForRegex": {
+              "$numberInt": "1"
+            }
+          },
+          "ok": {
+            "$numberInt": "1"
+          },
+          "$clusterTime": {
+            "clusterTime": {
+              "$timestamp": {
+                "t": 1792336641,
+                "i": 27
+              }
+            },
+            "signature": {
+              "hash": {
+                "$binary": {
+                  "base64": "AAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+                  "subType": "00"
+                }
+              },
+              "keyId": {
+                "$numberLong": "0"
+              }
+            }
+          },
+          "operationTime": {
+            "$timestamp": {
+              "t": 1792336641,
+              "i": 27
+            }
+          }
+        },
+        "index": {
+          "filter": {
+            "userId": {
+              "$numberInt": "2500"
+            },
+            "status": "paid"
+          },
+          "sort": {
+            "createdAt": {
+              "$numberInt": "-1"
+            },
+            "_id": {
+              "$numberInt": "1"
+            }
+          },
+          "index": {
+            "userId": {
+              "$numberInt": "1"
+            },
+            "status": {
+              "$numberInt": "1"
+            },
+            "createdAt": {
+              "$numberInt": "-1"
+            },
+            "_id": {
+              "$numberInt": "1"
+            }
+          },
+          "hint": false,
+          "before": {
+            "nReturned": {
+              "$numberInt": "20"
+            },
+            "totalKeysExamined": {
+              "$numberInt": "0"
+            },
+            "totalDocsExamined": {
+              "$numberInt": "10000"
+            },
+            "hasSORT": true
+          },
+          "after": {
+            "nReturned": {
+              "$numberInt": "20"
+            },
+            "totalKeysExamined": {
+              "$numberInt": "20"
+            },
+            "totalDocsExamined": {
+              "$numberInt": "20"
+            },
+            "hasSORT": false
+          },
+          "beforeIds": [
+            "G09928",
+            "G09929",
+            "G09924",
+            "G09925",
+            "G09920",
+            "G09921",
+            "G09916",
+            "G09917",
+            "G09912",
+            "G09913",
+            "G09908",
+            "G09909",
+            "G09904",
+            "G09905",
+            "G09900",
+            "G09901",
+            "G09828",
+            "G09829",
+            "G09824",
+            "G09825"
+          ],
+          "afterIds": [
+            "G09928",
+            "G09929",
+            "G09924",
+            "G09925",
+            "G09920",
+            "G09921",
+            "G09916",
+            "G09917",
+            "G09912",
+            "G09913",
+            "G09908",
+            "G09909",
+            "G09904",
+            "G09905",
+            "G09900",
+            "G09901",
+            "G09828",
+            "G09829",
+            "G09824",
+            "G09825"
+          ],
+          "beforeDocuments": [
+            {
+              "_id": "G09928",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1777891440000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "G09929",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1777891440000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "G09924",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1777891320000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "G09925",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1777891320000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "G09920",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1777891200000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "G09921",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1777891200000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "G09916",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1777891080000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "G09917",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1777891080000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "G09912",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1777890960000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "G09913",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1777890960000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "G09908",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1777890840000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "G09909",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1777890840000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "G09904",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1777890720000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "G09905",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1777890720000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "G09900",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1777890600000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "G09901",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1777890600000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "G09828",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1777888440000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "G09829",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1777888440000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "G09824",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1777888320000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "G09825",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1777888320000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            }
+          ],
+          "afterDocuments": [
+            {
+              "_id": "G09928",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1777891440000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "G09929",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1777891440000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "G09924",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1777891320000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "G09925",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1777891320000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "G09920",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1777891200000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "G09921",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1777891200000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "G09916",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1777891080000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "G09917",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1777891080000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "G09912",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1777890960000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "G09913",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1777890960000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "G09908",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1777890840000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "G09909",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1777890840000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "G09904",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1777890720000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "G09905",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1777890720000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "G09900",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1777890600000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "G09901",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1777890600000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "G09828",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1777888440000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "G09829",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1777888440000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "G09824",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1777888320000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            },
+            {
+              "_id": "G09825",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1777888320000"
+                }
+              },
+              "status": "paid",
+              "items": [
+                {
+                  "sku": "F",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "server": "8.0.30",
+      "finishedAt": {
+        "$date": {
+          "$numberLong": "1792336641093"
+        }
+      }
+    },
+    "purchase": {
+      "status": "passed",
+      "startedAt": {
+        "$date": {
+          "$numberLong": "1792336641095"
+        }
+      },
+      "solutionHash": "893e4ee20811d761821c3428b476d82a1187d6ea77d76f53a78e317fe3cfa23d",
+      "checks": [
+        "second item insufficient",
+        "first update modified before abort",
+        "server observed started and aborted transaction",
+        "abort restores both full documents and leaves no order",
+        "server observed started and committed transaction",
+        "success changes only selected stocks",
+        "exactly one created order",
+        "userId/date types",
+        "snapshot item prices",
+        "saved items match request in original order",
+        "returned order is saved order",
+        "stored BSON types: integer user/qty, decimal prices, date",
+        "replay returns original order",
+        "replay no writes despite changed catalog price/key order",
+        "changed qty rejected as request conflict",
+        "conflict changes nothing",
+        "missing variant rejected",
+        "missing variant rollback",
+        "unknown SKU rejected",
+        "unknown SKU rollback"
+      ],
+      "artifacts": {
+        "transactions-rollback": {
+          "scenario": "rollback",
+          "before": {
+            "host": "f7d7732ea322",
+            "pid": {
+              "$numberLong": "1"
+            },
+            "uptime": {
+              "$numberInt": "8168"
+            },
+            "localTime": {
+              "$date": {
+                "$numberLong": "1792336641117"
+              }
+            },
+            "transactions": {
+              "retriedCommandsCount": {
+                "$numberLong": "0"
+              },
+              "retriedStatementsCount": {
+                "$numberLong": "0"
+              },
+              "transactionsCollectionWriteCount": {
+                "$numberLong": "61"
+              },
+              "currentActive": {
+                "$numberLong": "0"
+              },
+              "currentInactive": {
+                "$numberLong": "0"
+              },
+              "currentOpen": {
+                "$numberLong": "0"
+              },
+              "totalAborted": {
+                "$numberLong": "4"
+              },
+              "totalCommitted": {
+                "$numberLong": "2"
+              },
+              "totalStarted": {
+                "$numberLong": "6"
+              },
+              "totalPrepared": {
+                "$numberLong": "0"
+              },
+              "totalPreparedThenCommitted": {
+                "$numberLong": "0"
+              },
+              "totalPreparedThenAborted": {
+                "$numberLong": "0"
+              },
+              "currentPrepared": {
+                "$numberLong": "0"
+              },
+              "lastCommittedTransaction": {
+                "operationCount": {
+                  "$numberLong": "0"
+                },
+                "oplogOperationBytes": {
+                  "$numberLong": "0"
+                },
+                "writeConcern": {
+                  "w": "majority",
+                  "j": true,
+                  "wtimeout": {
+                    "$numberInt": "10000"
+                  },
+                  "provenance": "clientSupplied"
+                }
+              }
+            }
+          },
+          "after": {
+            "host": "f7d7732ea322",
+            "pid": {
+              "$numberLong": "1"
+            },
+            "uptime": {
+              "$numberInt": "8168"
+            },
+            "localTime": {
+              "$date": {
+                "$numberLong": "1792336641126"
+              }
+            },
+            "transactions": {
+              "retriedCommandsCount": {
+                "$numberLong": "0"
+              },
+              "retriedStatementsCount": {
+                "$numberLong": "0"
+              },
+              "transactionsCollectionWriteCount": {
+                "$numberLong": "61"
+              },
+              "currentActive": {
+                "$numberLong": "0"
+              },
+              "currentInactive": {
+                "$numberLong": "0"
+              },
+              "currentOpen": {
+                "$numberLong": "0"
+              },
+              "totalAborted": {
+                "$numberLong": "5"
+              },
+              "totalCommitted": {
+                "$numberLong": "2"
+              },
+              "totalStarted": {
+                "$numberLong": "7"
+              },
+              "totalPrepared": {
+                "$numberLong": "0"
+              },
+              "totalPreparedThenCommitted": {
+                "$numberLong": "0"
+              },
+              "totalPreparedThenAborted": {
+                "$numberLong": "0"
+              },
+              "currentPrepared": {
+                "$numberLong": "0"
+              },
+              "lastCommittedTransaction": {
+                "operationCount": {
+                  "$numberLong": "0"
+                },
+                "oplogOperationBytes": {
+                  "$numberLong": "0"
+                },
+                "writeConcern": {
+                  "w": "majority",
+                  "j": true,
+                  "wtimeout": {
+                    "$numberInt": "10000"
+                  },
+                  "provenance": "clientSupplied"
+                }
+              }
+            }
+          },
+          "delta": {
+            "totalStarted": {
+              "$numberInt": "1"
+            },
+            "totalCommitted": {
+              "$numberInt": "0"
+            },
+            "totalAborted": {
+              "$numberInt": "1"
+            }
+          },
+          "sameProcess": true
+        },
+        "transactions-success": {
+          "scenario": "success",
+          "before": {
+            "host": "f7d7732ea322",
+            "pid": {
+              "$numberLong": "1"
+            },
+            "uptime": {
+              "$numberInt": "8168"
+            },
+            "localTime": {
+              "$date": {
+                "$numberLong": "1792336641139"
+              }
+            },
+            "transactions": {
+              "retriedCommandsCount": {
+                "$numberLong": "0"
+              },
+              "retriedStatementsCount": {
+                "$numberLong": "0"
+              },
+              "transactionsCollectionWriteCount": {
+                "$numberLong": "61"
+              },
+              "currentActive": {
+                "$numberLong": "0"
+              },
+              "currentInactive": {
+                "$numberLong": "0"
+              },
+              "currentOpen": {
+                "$numberLong": "0"
+              },
+              "totalAborted": {
+                "$numberLong": "5"
+              },
+              "totalCommitted": {
+                "$numberLong": "2"
+              },
+              "totalStarted": {
+                "$numberLong": "7"
+              },
+              "totalPrepared": {
+                "$numberLong": "0"
+              },
+              "totalPreparedThenCommitted": {
+                "$numberLong": "0"
+              },
+              "totalPreparedThenAborted": {
+                "$numberLong": "0"
+              },
+              "currentPrepared": {
+                "$numberLong": "0"
+              },
+              "lastCommittedTransaction": {
+                "operationCount": {
+                  "$numberLong": "0"
+                },
+                "oplogOperationBytes": {
+                  "$numberLong": "0"
+                },
+                "writeConcern": {
+                  "w": "majority",
+                  "j": true,
+                  "wtimeout": {
+                    "$numberInt": "10000"
+                  },
+                  "provenance": "clientSupplied"
+                }
+              }
+            }
+          },
+          "after": {
+            "host": "f7d7732ea322",
+            "pid": {
+              "$numberLong": "1"
+            },
+            "uptime": {
+              "$numberInt": "8168"
+            },
+            "localTime": {
+              "$date": {
+                "$numberLong": "1792336641146"
+              }
+            },
+            "transactions": {
+              "retriedCommandsCount": {
+                "$numberLong": "0"
+              },
+              "retriedStatementsCount": {
+                "$numberLong": "0"
+              },
+              "transactionsCollectionWriteCount": {
+                "$numberLong": "62"
+              },
+              "currentActive": {
+                "$numberLong": "0"
+              },
+              "currentInactive": {
+                "$numberLong": "0"
+              },
+              "currentOpen": {
+                "$numberLong": "0"
+              },
+              "totalAborted": {
+                "$numberLong": "5"
+              },
+              "totalCommitted": {
+                "$numberLong": "3"
+              },
+              "totalStarted": {
+                "$numberLong": "8"
+              },
+              "totalPrepared": {
+                "$numberLong": "0"
+              },
+              "totalPreparedThenCommitted": {
+                "$numberLong": "0"
+              },
+              "totalPreparedThenAborted": {
+                "$numberLong": "0"
+              },
+              "currentPrepared": {
+                "$numberLong": "0"
+              },
+              "lastCommittedTransaction": {
+                "operationCount": {
+                  "$numberLong": "3"
+                },
+                "oplogOperationBytes": {
+                  "$numberLong": "1437"
+                },
+                "writeConcern": {
+                  "w": "majority",
+                  "j": true,
+                  "wtimeout": {
+                    "$numberInt": "10000"
+                  },
+                  "provenance": "clientSupplied"
+                }
+              }
+            }
+          },
+          "delta": {
+            "totalStarted": {
+              "$numberInt": "1"
+            },
+            "totalCommitted": {
+              "$numberInt": "1"
+            },
+            "totalAborted": {
+              "$numberInt": "0"
+            }
+          },
+          "sameProcess": true
+        },
+        "purchase": {
+          "request": {
+            "operationId": "purchase-001",
+            "userId": {
+              "$numberInt": "2500"
+            },
+            "items": [
+              {
+                "sku": "A",
+                "size": "M",
+                "qty": {
+                  "$numberInt": "2"
+                }
+              },
+              {
+                "sku": "B",
+                "size": "L",
+                "qty": {
+                  "$numberInt": "1"
+                }
+              }
+            ]
+          },
+          "rollback": {
+            "request": {
+              "operationId": "rollback-001",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "items": [
+                {
+                  "sku": "A",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "2"
+                  }
+                },
+                {
+                  "sku": "B",
+                  "size": "L",
+                  "qty": {
+                    "$numberInt": "6"
+                  }
+                }
+              ]
+            },
+            "trace": [
+              {
+                "event": "update_inside_transaction",
+                "sku": "A",
+                "matched": {
+                  "$numberInt": "1"
+                },
+                "modified": {
+                  "$numberInt": "1"
+                }
+              },
+              {
+                "event": "update_inside_transaction",
+                "sku": "B",
+                "matched": {
+                  "$numberInt": "0"
+                },
+                "modified": {
+                  "$numberInt": "0"
+                }
+              }
+            ],
+            "error": "ITEM_UNAVAILABLE",
+            "before": {
+              "products": [
+                {
+                  "_id": "A",
+                  "name": "Футболка",
+                  "category": "clothes",
+                  "price": {
+                    "$numberDecimal": "100.00"
+                  },
+                  "variants": [
+                    {
+                      "size": "L",
+                      "stock": {
+                        "$numberInt": "0"
+                      }
+                    },
+                    {
+                      "size": "M",
+                      "stock": {
+                        "$numberInt": "10"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "_id": "B",
+                  "name": "Рубашка",
+                  "category": "clothes",
+                  "price": {
+                    "$numberDecimal": "80.00"
+                  },
+                  "variants": [
+                    {
+                      "size": "L",
+                      "stock": {
+                        "$numberInt": "5"
+                      }
+                    },
+                    {
+                      "size": "M",
+                      "stock": {
+                        "$numberInt": "4"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "_id": "C",
+                  "name": "Толстовка",
+                  "category": "clothes",
+                  "price": {
+                    "$numberDecimal": "90.00"
+                  },
+                  "variants": [
+                    {
+                      "size": "L",
+                      "stock": {
+                        "$numberInt": "3"
+                      }
+                    },
+                    {
+                      "size": "M",
+                      "stock": {
+                        "$numberInt": "2"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "_id": "D",
+                  "name": "Ремень",
+                  "category": "accessories",
+                  "price": {
+                    "$numberDecimal": "120.00"
+                  },
+                  "variants": [
+                    {
+                      "size": "L",
+                      "stock": {
+                        "$numberInt": "4"
+                      }
+                    },
+                    {
+                      "size": "M",
+                      "stock": {
+                        "$numberInt": "6"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "_id": "E",
+                  "name": "Сумка",
+                  "category": "accessories",
+                  "price": {
+                    "$numberDecimal": "200.00"
+                  },
+                  "variants": [
+                    {
+                      "size": "L",
+                      "stock": {
+                        "$numberInt": "2"
+                      }
+                    },
+                    {
+                      "size": "M",
+                      "stock": {
+                        "$numberInt": "1"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "_id": "F",
+                  "name": "Шарф",
+                  "category": "accessories",
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  },
+                  "variants": [
+                    {
+                      "size": "L",
+                      "stock": {
+                        "$numberInt": "1"
+                      }
+                    },
+                    {
+                      "size": "M",
+                      "stock": {
+                        "$numberInt": "8"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "orders": []
+            },
+            "after": {
+              "products": [
+                {
+                  "_id": "A",
+                  "name": "Футболка",
+                  "category": "clothes",
+                  "price": {
+                    "$numberDecimal": "100.00"
+                  },
+                  "variants": [
+                    {
+                      "size": "L",
+                      "stock": {
+                        "$numberInt": "0"
+                      }
+                    },
+                    {
+                      "size": "M",
+                      "stock": {
+                        "$numberInt": "10"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "_id": "B",
+                  "name": "Рубашка",
+                  "category": "clothes",
+                  "price": {
+                    "$numberDecimal": "80.00"
+                  },
+                  "variants": [
+                    {
+                      "size": "L",
+                      "stock": {
+                        "$numberInt": "5"
+                      }
+                    },
+                    {
+                      "size": "M",
+                      "stock": {
+                        "$numberInt": "4"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "_id": "C",
+                  "name": "Толстовка",
+                  "category": "clothes",
+                  "price": {
+                    "$numberDecimal": "90.00"
+                  },
+                  "variants": [
+                    {
+                      "size": "L",
+                      "stock": {
+                        "$numberInt": "3"
+                      }
+                    },
+                    {
+                      "size": "M",
+                      "stock": {
+                        "$numberInt": "2"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "_id": "D",
+                  "name": "Ремень",
+                  "category": "accessories",
+                  "price": {
+                    "$numberDecimal": "120.00"
+                  },
+                  "variants": [
+                    {
+                      "size": "L",
+                      "stock": {
+                        "$numberInt": "4"
+                      }
+                    },
+                    {
+                      "size": "M",
+                      "stock": {
+                        "$numberInt": "6"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "_id": "E",
+                  "name": "Сумка",
+                  "category": "accessories",
+                  "price": {
+                    "$numberDecimal": "200.00"
+                  },
+                  "variants": [
+                    {
+                      "size": "L",
+                      "stock": {
+                        "$numberInt": "2"
+                      }
+                    },
+                    {
+                      "size": "M",
+                      "stock": {
+                        "$numberInt": "1"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "_id": "F",
+                  "name": "Шарф",
+                  "category": "accessories",
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  },
+                  "variants": [
+                    {
+                      "size": "L",
+                      "stock": {
+                        "$numberInt": "1"
+                      }
+                    },
+                    {
+                      "size": "M",
+                      "stock": {
+                        "$numberInt": "8"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "orders": []
+            }
+          },
+          "success": {
+            "order": {
+              "_id": "purchase-001",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1792336641143"
+                }
+              },
+              "status": "created",
+              "items": [
+                {
+                  "sku": "A",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "2"
+                  },
+                  "price": {
+                    "$numberDecimal": "100.00"
+                  }
+                },
+                {
+                  "sku": "B",
+                  "size": "L",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "80.00"
+                  }
+                }
+              ]
+            },
+            "state": {
+              "products": [
+                {
+                  "_id": "A",
+                  "name": "Футболка",
+                  "category": "clothes",
+                  "price": {
+                    "$numberDecimal": "100.00"
+                  },
+                  "variants": [
+                    {
+                      "size": "L",
+                      "stock": {
+                        "$numberInt": "0"
+                      }
+                    },
+                    {
+                      "size": "M",
+                      "stock": {
+                        "$numberInt": "8"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "_id": "B",
+                  "name": "Рубашка",
+                  "category": "clothes",
+                  "price": {
+                    "$numberDecimal": "80.00"
+                  },
+                  "variants": [
+                    {
+                      "size": "L",
+                      "stock": {
+                        "$numberInt": "4"
+                      }
+                    },
+                    {
+                      "size": "M",
+                      "stock": {
+                        "$numberInt": "4"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "_id": "C",
+                  "name": "Толстовка",
+                  "category": "clothes",
+                  "price": {
+                    "$numberDecimal": "90.00"
+                  },
+                  "variants": [
+                    {
+                      "size": "L",
+                      "stock": {
+                        "$numberInt": "3"
+                      }
+                    },
+                    {
+                      "size": "M",
+                      "stock": {
+                        "$numberInt": "2"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "_id": "D",
+                  "name": "Ремень",
+                  "category": "accessories",
+                  "price": {
+                    "$numberDecimal": "120.00"
+                  },
+                  "variants": [
+                    {
+                      "size": "L",
+                      "stock": {
+                        "$numberInt": "4"
+                      }
+                    },
+                    {
+                      "size": "M",
+                      "stock": {
+                        "$numberInt": "6"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "_id": "E",
+                  "name": "Сумка",
+                  "category": "accessories",
+                  "price": {
+                    "$numberDecimal": "200.00"
+                  },
+                  "variants": [
+                    {
+                      "size": "L",
+                      "stock": {
+                        "$numberInt": "2"
+                      }
+                    },
+                    {
+                      "size": "M",
+                      "stock": {
+                        "$numberInt": "1"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "_id": "F",
+                  "name": "Шарф",
+                  "category": "accessories",
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  },
+                  "variants": [
+                    {
+                      "size": "L",
+                      "stock": {
+                        "$numberInt": "1"
+                      }
+                    },
+                    {
+                      "size": "M",
+                      "stock": {
+                        "$numberInt": "8"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "orders": [
+                {
+                  "_id": "purchase-001",
+                  "userId": {
+                    "$numberInt": "2500"
+                  },
+                  "createdAt": {
+                    "$date": {
+                      "$numberLong": "1792336641143"
+                    }
+                  },
+                  "status": "created",
+                  "items": [
+                    {
+                      "sku": "A",
+                      "size": "M",
+                      "qty": {
+                        "$numberInt": "2"
+                      },
+                      "price": {
+                        "$numberDecimal": "100.00"
+                      }
+                    },
+                    {
+                      "sku": "B",
+                      "size": "L",
+                      "qty": {
+                        "$numberInt": "1"
+                      },
+                      "price": {
+                        "$numberDecimal": "80.00"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          "replay": {
+            "order": {
+              "_id": "purchase-001",
+              "userId": {
+                "$numberInt": "2500"
+              },
+              "createdAt": {
+                "$date": {
+                  "$numberLong": "1792336641143"
+                }
+              },
+              "status": "created",
+              "items": [
+                {
+                  "sku": "A",
+                  "size": "M",
+                  "qty": {
+                    "$numberInt": "2"
+                  },
+                  "price": {
+                    "$numberDecimal": "100.00"
+                  }
+                },
+                {
+                  "sku": "B",
+                  "size": "L",
+                  "qty": {
+                    "$numberInt": "1"
+                  },
+                  "price": {
+                    "$numberDecimal": "80.00"
+                  }
+                }
+              ]
+            },
+            "before": {
+              "products": [
+                {
+                  "_id": "A",
+                  "name": "Футболка",
+                  "category": "clothes",
+                  "price": {
+                    "$numberDecimal": "777.00"
+                  },
+                  "variants": [
+                    {
+                      "size": "L",
+                      "stock": {
+                        "$numberInt": "0"
+                      }
+                    },
+                    {
+                      "size": "M",
+                      "stock": {
+                        "$numberInt": "8"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "_id": "B",
+                  "name": "Рубашка",
+                  "category": "clothes",
+                  "price": {
+                    "$numberDecimal": "80.00"
+                  },
+                  "variants": [
+                    {
+                      "size": "L",
+                      "stock": {
+                        "$numberInt": "4"
+                      }
+                    },
+                    {
+                      "size": "M",
+                      "stock": {
+                        "$numberInt": "4"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "_id": "C",
+                  "name": "Толстовка",
+                  "category": "clothes",
+                  "price": {
+                    "$numberDecimal": "90.00"
+                  },
+                  "variants": [
+                    {
+                      "size": "L",
+                      "stock": {
+                        "$numberInt": "3"
+                      }
+                    },
+                    {
+                      "size": "M",
+                      "stock": {
+                        "$numberInt": "2"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "_id": "D",
+                  "name": "Ремень",
+                  "category": "accessories",
+                  "price": {
+                    "$numberDecimal": "120.00"
+                  },
+                  "variants": [
+                    {
+                      "size": "L",
+                      "stock": {
+                        "$numberInt": "4"
+                      }
+                    },
+                    {
+                      "size": "M",
+                      "stock": {
+                        "$numberInt": "6"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "_id": "E",
+                  "name": "Сумка",
+                  "category": "accessories",
+                  "price": {
+                    "$numberDecimal": "200.00"
+                  },
+                  "variants": [
+                    {
+                      "size": "L",
+                      "stock": {
+                        "$numberInt": "2"
+                      }
+                    },
+                    {
+                      "size": "M",
+                      "stock": {
+                        "$numberInt": "1"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "_id": "F",
+                  "name": "Шарф",
+                  "category": "accessories",
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  },
+                  "variants": [
+                    {
+                      "size": "L",
+                      "stock": {
+                        "$numberInt": "1"
+                      }
+                    },
+                    {
+                      "size": "M",
+                      "stock": {
+                        "$numberInt": "8"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "orders": [
+                {
+                  "_id": "purchase-001",
+                  "userId": {
+                    "$numberInt": "2500"
+                  },
+                  "createdAt": {
+                    "$date": {
+                      "$numberLong": "1792336641143"
+                    }
+                  },
+                  "status": "created",
+                  "items": [
+                    {
+                      "sku": "A",
+                      "size": "M",
+                      "qty": {
+                        "$numberInt": "2"
+                      },
+                      "price": {
+                        "$numberDecimal": "100.00"
+                      }
+                    },
+                    {
+                      "sku": "B",
+                      "size": "L",
+                      "qty": {
+                        "$numberInt": "1"
+                      },
+                      "price": {
+                        "$numberDecimal": "80.00"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            "after": {
+              "products": [
+                {
+                  "_id": "A",
+                  "name": "Футболка",
+                  "category": "clothes",
+                  "price": {
+                    "$numberDecimal": "777.00"
+                  },
+                  "variants": [
+                    {
+                      "size": "L",
+                      "stock": {
+                        "$numberInt": "0"
+                      }
+                    },
+                    {
+                      "size": "M",
+                      "stock": {
+                        "$numberInt": "8"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "_id": "B",
+                  "name": "Рубашка",
+                  "category": "clothes",
+                  "price": {
+                    "$numberDecimal": "80.00"
+                  },
+                  "variants": [
+                    {
+                      "size": "L",
+                      "stock": {
+                        "$numberInt": "4"
+                      }
+                    },
+                    {
+                      "size": "M",
+                      "stock": {
+                        "$numberInt": "4"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "_id": "C",
+                  "name": "Толстовка",
+                  "category": "clothes",
+                  "price": {
+                    "$numberDecimal": "90.00"
+                  },
+                  "variants": [
+                    {
+                      "size": "L",
+                      "stock": {
+                        "$numberInt": "3"
+                      }
+                    },
+                    {
+                      "size": "M",
+                      "stock": {
+                        "$numberInt": "2"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "_id": "D",
+                  "name": "Ремень",
+                  "category": "accessories",
+                  "price": {
+                    "$numberDecimal": "120.00"
+                  },
+                  "variants": [
+                    {
+                      "size": "L",
+                      "stock": {
+                        "$numberInt": "4"
+                      }
+                    },
+                    {
+                      "size": "M",
+                      "stock": {
+                        "$numberInt": "6"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "_id": "E",
+                  "name": "Сумка",
+                  "category": "accessories",
+                  "price": {
+                    "$numberDecimal": "200.00"
+                  },
+                  "variants": [
+                    {
+                      "size": "L",
+                      "stock": {
+                        "$numberInt": "2"
+                      }
+                    },
+                    {
+                      "size": "M",
+                      "stock": {
+                        "$numberInt": "1"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "_id": "F",
+                  "name": "Шарф",
+                  "category": "accessories",
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  },
+                  "variants": [
+                    {
+                      "size": "L",
+                      "stock": {
+                        "$numberInt": "1"
+                      }
+                    },
+                    {
+                      "size": "M",
+                      "stock": {
+                        "$numberInt": "8"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "orders": [
+                {
+                  "_id": "purchase-001",
+                  "userId": {
+                    "$numberInt": "2500"
+                  },
+                  "createdAt": {
+                    "$date": {
+                      "$numberLong": "1792336641143"
+                    }
+                  },
+                  "status": "created",
+                  "items": [
+                    {
+                      "sku": "A",
+                      "size": "M",
+                      "qty": {
+                        "$numberInt": "2"
+                      },
+                      "price": {
+                        "$numberDecimal": "100.00"
+                      }
+                    },
+                    {
+                      "sku": "B",
+                      "size": "L",
+                      "qty": {
+                        "$numberInt": "1"
+                      },
+                      "price": {
+                        "$numberDecimal": "80.00"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          "conflict": {
+            "error": "REQUEST_CONFLICT",
+            "after": {
+              "products": [
+                {
+                  "_id": "A",
+                  "name": "Футболка",
+                  "category": "clothes",
+                  "price": {
+                    "$numberDecimal": "777.00"
+                  },
+                  "variants": [
+                    {
+                      "size": "L",
+                      "stock": {
+                        "$numberInt": "0"
+                      }
+                    },
+                    {
+                      "size": "M",
+                      "stock": {
+                        "$numberInt": "8"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "_id": "B",
+                  "name": "Рубашка",
+                  "category": "clothes",
+                  "price": {
+                    "$numberDecimal": "80.00"
+                  },
+                  "variants": [
+                    {
+                      "size": "L",
+                      "stock": {
+                        "$numberInt": "4"
+                      }
+                    },
+                    {
+                      "size": "M",
+                      "stock": {
+                        "$numberInt": "4"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "_id": "C",
+                  "name": "Толстовка",
+                  "category": "clothes",
+                  "price": {
+                    "$numberDecimal": "90.00"
+                  },
+                  "variants": [
+                    {
+                      "size": "L",
+                      "stock": {
+                        "$numberInt": "3"
+                      }
+                    },
+                    {
+                      "size": "M",
+                      "stock": {
+                        "$numberInt": "2"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "_id": "D",
+                  "name": "Ремень",
+                  "category": "accessories",
+                  "price": {
+                    "$numberDecimal": "120.00"
+                  },
+                  "variants": [
+                    {
+                      "size": "L",
+                      "stock": {
+                        "$numberInt": "4"
+                      }
+                    },
+                    {
+                      "size": "M",
+                      "stock": {
+                        "$numberInt": "6"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "_id": "E",
+                  "name": "Сумка",
+                  "category": "accessories",
+                  "price": {
+                    "$numberDecimal": "200.00"
+                  },
+                  "variants": [
+                    {
+                      "size": "L",
+                      "stock": {
+                        "$numberInt": "2"
+                      }
+                    },
+                    {
+                      "size": "M",
+                      "stock": {
+                        "$numberInt": "1"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "_id": "F",
+                  "name": "Шарф",
+                  "category": "accessories",
+                  "price": {
+                    "$numberDecimal": "150.00"
+                  },
+                  "variants": [
+                    {
+                      "size": "L",
+                      "stock": {
+                        "$numberInt": "1"
+                      }
+                    },
+                    {
+                      "size": "M",
+                      "stock": {
+                        "$numberInt": "8"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "orders": [
+                {
+                  "_id": "purchase-001",
+                  "userId": {
+                    "$numberInt": "2500"
+                  },
+                  "createdAt": {
+                    "$date": {
+                      "$numberLong": "1792336641143"
+                    }
+                  },
+                  "status": "created",
+                  "items": [
+                    {
+                      "sku": "A",
+                      "size": "M",
+                      "qty": {
+                        "$numberInt": "2"
+                      },
+                      "price": {
+                        "$numberDecimal": "100.00"
+                      }
+                    },
+                    {
+                      "sku": "B",
+                      "size": "L",
+                      "qty": {
+                        "$numberInt": "1"
+                      },
+                      "price": {
+                        "$numberDecimal": "80.00"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          "missingError": "ITEM_UNAVAILABLE",
+          "unknownError": "ITEM_UNAVAILABLE",
+          "trace": [
+            {
+              "event": "update_inside_transaction",
+              "sku": "A",
+              "matched": {
+                "$numberInt": "1"
+              },
+              "modified": {
+                "$numberInt": "1"
+              }
+            },
+            {
+              "event": "update_inside_transaction",
+              "sku": "B",
+              "matched": {
+                "$numberInt": "1"
+              },
+              "modified": {
+                "$numberInt": "1"
+              }
+            },
+            {
+              "event": "update_inside_transaction",
+              "sku": "A",
+              "matched": {
+                "$numberInt": "1"
+              },
+              "modified": {
+                "$numberInt": "1"
+              }
+            },
+            {
+              "event": "update_inside_transaction",
+              "sku": "B",
+              "matched": {
+                "$numberInt": "0"
+              },
+              "modified": {
+                "$numberInt": "0"
+              }
+            },
+            {
+              "event": "update_inside_transaction",
+              "sku": "A",
+              "matched": {
+                "$numberInt": "1"
+              },
+              "modified": {
+                "$numberInt": "1"
+              }
+            },
+            {
+              "event": "update_inside_transaction",
+              "sku": "NO_SUCH_SKU",
+              "matched": {
+                "$numberInt": "0"
+              },
+              "modified": {
+                "$numberInt": "0"
+              }
+            }
+          ],
+          "checks": [
+            "second item insufficient",
+            "first update modified before abort",
+            "server observed started and aborted transaction",
+            "abort restores both full documents and leaves no order",
+            "server observed started and committed transaction",
+            "success changes only selected stocks",
+            "exactly one created order",
+            "userId/date types",
+            "snapshot item prices",
+            "saved items match request in original order",
+            "returned order is saved order",
+            "stored BSON types: integer user/qty, decimal prices, date",
+            "replay returns original order",
+            "replay no writes despite changed catalog price/key order",
+            "changed qty rejected as request conflict",
+            "conflict changes nothing",
+            "missing variant rejected",
+            "missing variant rollback",
+            "unknown SKU rejected",
+            "unknown SKU rollback"
+          ]
+        }
+      },
+      "server": "8.0.30",
+      "finishedAt": {
+        "$date": {
+          "$numberLong": "1792336641196"
+        }
+      }
+    },
+    "failover": {
+      "status": "passed",
+      "startedAt": {
+        "$date": {
+          "$numberLong": "1792336641198"
+        }
+      },
+      "solutionHash": "893e4ee20811d761821c3428b476d82a1187d6ea77d76f53a78e317fe3cfa23d",
+      "checks": [
+        "3 data-bearing nodes ready",
+        "first majority write acknowledged",
+        "primary actually changed",
+        "same client instance",
+        "old majority document read",
+        "new majority write acknowledged",
+        "both documents present"
+      ],
+      "artifacts": {
+        "failover": {
+          "connection": "mongodb://m1:27017,m2:27017,m3:27017/hw2?replicaSet=hw2rs",
+          "sameClient": true,
+          "writeConcern": {
+            "w": "majority",
+            "j": true,
+            "wtimeout": {
+              "$numberInt": "10000"
+            }
+          },
+          "before": [
+            {
+              "host": "m1:27017",
+              "role": "PRIMARY"
+            },
+            {
+              "host": "m2:27017",
+              "role": "SECONDARY"
+            },
+            {
+              "host": "m3:27017",
+              "role": "SECONDARY"
+            }
+          ],
+          "firstWrite": {
+            "acknowledged": true,
+            "insertedId": "before",
+            "matchedCount": {
+              "$numberInt": "0"
+            },
+            "modifiedCount": {
+              "$numberInt": "0"
+            },
+            "upsertedCount": {
+              "$numberInt": "1"
+            }
+          },
+          "stepDown": {
+            "ok": {
+              "$numberInt": "1"
+            },
+            "$clusterTime": {
+              "clusterTime": {
+                "$timestamp": {
+                  "t": 1792336641,
+                  "i": 41
+                }
+              },
+              "signature": {
+                "hash": {
+                  "$binary": {
+                    "base64": "AAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+                    "subType": "00"
+                  }
+                },
+                "keyId": {
+                  "$numberLong": "0"
+                }
+              }
+            },
+            "operationTime": {
+              "$timestamp": {
+                "t": 1792336641,
+                "i": 41
+              }
+            }
+          },
+          "retries": [],
+          "after": [
+            {
+              "host": "m1:27017",
+              "role": "SECONDARY"
+            },
+            {
+              "host": "m2:27017",
+              "role": "PRIMARY"
+            },
+            {
+              "host": "m3:27017",
+              "role": "SECONDARY"
+            }
+          ],
+          "read": {
+            "_id": "before",
+            "message": "majority confirmed before stepDown"
+          },
+          "newWrite": {
+            "acknowledged": true,
+            "insertedId": "after",
+            "matchedCount": {
+              "$numberInt": "0"
+            },
+            "modifiedCount": {
+              "$numberInt": "0"
+            },
+            "upsertedCount": {
+              "$numberInt": "1"
+            }
+          },
+          "documents": [
+            {
+              "_id": "after",
+              "message": "majority confirmed after stepDown"
+            },
+            {
+              "_id": "before",
+              "message": "majority confirmed before stepDown"
+            }
+          ],
+          "checks": [
+            "3 data-bearing nodes ready",
+            "first majority write acknowledged",
+            "primary actually changed",
+            "same client instance",
+            "old majority document read",
+            "new majority write acknowledged",
+            "both documents present"
+          ]
+        }
+      },
+      "server": "8.0.30",
+      "finishedAt": {
+        "$date": {
+          "$numberLong": "1792336641247"
+        }
+      }
+    },
+    "reset": {
+      "status": "outdated",
+      "startedAt": {
+        "$date": {
+          "$numberLong": "1792328488829"
+        }
+      },
+      "solutionHash": "3859862ec351733a98340ae0f818b6d3389975e31155c8da303cb8ed987ed5ab",
+      "checks": [
+        "fixtures loaded"
+      ],
+      "artifacts": {
+        "reset": {
+          "datasetVersion": "2026-10-05",
+          "mode": "data",
+          "products": {
+            "$numberInt": "6"
+          },
+          "orders": {
+            "$numberInt": "35"
+          }
+        }
+      },
+      "server": "8.0.30",
+      "finishedAt": {
+        "$date": {
+          "$numberLong": "1792328488854"
+        }
+      },
+      "previousStatus": "passed"
+    }
+  },
+  "updatedAt": {
+    "$date": {
+      "$numberLong": "1792336641247"
+    }
+  }
+}
